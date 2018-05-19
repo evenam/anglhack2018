@@ -1,0 +1,25 @@
+{
+  "name": "nappr",
+  "version": "1.0.0",
+  "description": "nap anywhere",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evenam/anglhack2018.git"
+  },
+  "keywords": [
+    "sleep"
+  ],
+  "author": "Zzzzzzz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/evenam/anglhack2018/issues"
+  },
+  "homepage": "https://github.com/evenam/anglhack2018#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
