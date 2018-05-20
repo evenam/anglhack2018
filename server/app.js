@@ -6,6 +6,7 @@ let cookieParser = require('cookie-parser');
 let jwt = require('jsonwebtoken');
 let secret = require('./secret');
 let cors = require('cors');
+let path = require('path');
 
 // socket stuff
 let http = require('http');
@@ -16,6 +17,7 @@ let hosts = new Server(hostServer);
 let guests = new Server(guestServer);
 
 // params parse
+app.use('/resources', express.static('resources'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -27,8 +29,6 @@ const HOST_PORT = 3333;
 const GUEST_PORT = 3334;
 
 // client list
-const { Client } = require('pg');
-const client = new Client();
 let hostlist = [];
 let guestlist = [];
 const findById = (array, id) => {
@@ -39,6 +39,10 @@ const findById = (array, id) => {
 	}
 	return -1;
 }
+
+// database connection
+const { Client } = require('pg');
+const client = new Client();
 
 // requests
 let requests = [];
@@ -123,12 +127,12 @@ let tick = setInterval(() => {
 	hostlist.forEach(host => {
 		let hostId = host.getID();
 		let hostRequests = requests.filter(request => request.hostId === hostId);
-		host.available = hostRequests.length > 0;
+		host.available = hostRequests.length === 0;
 	})
 	guestlist.forEach(guest => {
 		let guestId = guest.getID();
 		let guestRequests = requests.filter(request => request.guestId === guestId);
-		guest.available = guestRequests.length > 0;
+		guest.available = guestRequests.length === 0;
 	})
 }, 1000);
 
@@ -137,30 +141,56 @@ app.post('/authenticate', (req, res) => {
 });
 
 app.get('/bedlist', (req, res) => {
-	res.send(hostlist.filter(host => host.available)
-		.map(host => host.id)//.getListing())
-	);
+	Promise.all(hostlist
+		.filter(host => host.available)
+		.map(host => host.id)
+		.map(async hostId => {
+			const res = await client.query(`SELECT username, name, lat, lon, bedtype FROM Hosts WHERE '${hostId}'= username;`);
+			return res.rows[0];
+		}))
+		.then(results => res.send(results));
+	//res.send(results);
 });
 
 app.post('/request', (req, res) => {
 	let hostId = req.body.hostId;
 	let guestId = req.body.guestId;
-	let request = new Request(hostId, guestId);
-	requests.push(request);
-	res.send({ msg: 'success' });
-});
-
-app.get('/profile/{id}', (req, res) => {
-	let id = req.params.id;
-	let index = findById(hostlist, id);
-	if (index !== -1 && hostlist[index].available) {
-		res.send(hostlist[index].id);//.getProfile());
+	if (requests.filter(request => request.hostId === hostId).length >= 1) {
+		res.sendStatus(400);
 	} else {
-		res.sendStatus(404);
-		res.send('Not found');
+		let request = new Request(hostId, guestId);
+		requests.push(request);
+		res.send({ msg: 'success' });
 	}
 });
 
+app.get('/bedprofile/:id', (req, res) => {
+	let id = req.params.id;
+	new Promise(async (resolve, reject) => {
+			const res = await client.query(`SELECT username, name, lat, lon, bedtype, stars, votes, photo, phone FROM Hosts WHERE '${id}'=username;`);
+			if (res.rows.length === 1)
+				resolve(res.rows[0]);
+			else 
+				reject('not found');
+		})
+		.then(results => res.send(results))
+		.catch(reason => res.sendStatus(404));
+});
+
+app.get('/userprofile/:id', (req, res) => {
+	let id = req.params.id;
+	new Promise(async (resolve, reject) => {
+			const res = await client.query(`SELECT username, name, stars, votes, photo, phone FROM Guests WHERE '${id}'=username;`);
+			if (res.rows.length === 1)
+				resolve(res.rows[0]);
+			else 
+				reject('not found');
+		})
+		.then(results => res.send(results))
+		.catch(reason => res.sendStatus(404));
+});
+
+// this should never be in productions :/ should have a better authed support monitor
 app.get('/serverstatus', (req, res) => {
 	let hostData = hostlist.map(host => ({
 		id: host.id,
@@ -195,7 +225,7 @@ app.post('/status', (req, res) => {
 		});
 	} else {
 		res.sendStatus(404);
-		res.send('Not found');
+		//res.send('Not found');
 	}
 });
 
@@ -229,15 +259,19 @@ app.post('/guestresponse', (req, res) => {
 	}
 });
 
-app.listen(HTTP_PORT, () => {
-	console.log(`Listening on port ${HTTP_PORT}`);
-});
+(async () => {
+	await client.connect()
 
-hostServer.listen(HOST_PORT, () => {
-	console.log(`Listening on port ${HOST_PORT}`);
-});
+	app.listen(HTTP_PORT, () => {
+		console.log(`Listening on port ${HTTP_PORT}`);
+	});
 
-hostServer.listen(GUEST_PORT, () => {
-	console.log(`Listening on port ${GUEST_PORT}`);
-});
+	hostServer.listen(HOST_PORT, () => {
+		console.log(`Listening on port ${HOST_PORT}`);
+	});
+
+	guestServer.listen(GUEST_PORT, () => {
+		console.log(`Listening on port ${GUEST_PORT}`);
+	});
+})();
 
