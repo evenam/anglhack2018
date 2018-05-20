@@ -8,7 +8,7 @@ export default class App extends React.Component {
 		super(props);
 		console.log('connecting');
 
-		let socket = io('http://localhost:3333');
+		let socket = io('http://xstgx.com:3433');
 
 		this.state = { hostId: 'charles22', tick: null };
 
@@ -29,7 +29,7 @@ export default class App extends React.Component {
 			});
 
 			if (data && data.state === 'pending') {
-				fetch(`http://localhost:3000/userprofile/${data.guestId}`)
+				fetch(`http://xstgx.com:3400/userprofile/${data.guestId}`)
 					.then(res => res.json())
 					.then(this.populateProfile.bind(this));
 			}
@@ -56,7 +56,7 @@ export default class App extends React.Component {
 						<div>Name: {profile.name}</div>
 						<div>Rating: {profile.stars / profile.votes}</div>
 						<div>Phone Number: {profile.phone}</div>
-						<img src={`http://localhost:3000${profile.photo}`} />
+						<img src={`http://xstgx.com:3400${profile.photo}`} />
 					</div> : false }
 					<div>
 						<Button onClick={accept}>Accept</Button>
@@ -106,7 +106,7 @@ export default class App extends React.Component {
 					action: 'accept'
 				})
 			};
-			fetch('http://localhost:3000/hostresponse', options);
+			fetch('http://xstgx.com:3400/hostresponse', options);
 		}
 	}
 
@@ -120,7 +120,7 @@ export default class App extends React.Component {
 					action: 'reject'
 				})
 			};
-			fetch('http://localhost:3000/hostresponse', options);
+			fetch('http://xstgx.com:3400/hostresponse', options);
 		}
 	}
 
