@@ -7,6 +7,7 @@ export default class App extends React.Component {
 	constructor(props) {
 		super(props);
 		console.log('connecting');
+
 		let socket = io('http://localhost:3333');
 
 		this.state = { hostId: 'charles22', tick: null };

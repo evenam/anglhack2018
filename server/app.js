@@ -24,9 +24,9 @@ app.use(cookieParser());
 app.use(cors());
 
 // ports
-const HTTP_PORT = 3000;
-const HOST_PORT = 3333;
-const GUEST_PORT = 3334;
+const HTTP_PORT = 4000;
+const HOST_PORT = 4333;
+const GUEST_PORT = 4334;
 
 // client list
 let hostlist = [];
