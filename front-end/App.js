@@ -1,17 +1,26 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Login from './components/Login.js';
+import GuestHome from './components/Guest/Home.js';
+import HostHome from './components/Host/Home.js';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.isUserLoggedIn = true;
+    this.isUserGuest = true;
+  }
   render() {
+    let root = <Login></Login>;
+    if (this.isUserLoggedIn) {
+      if (this.isUserGuest) {
+        root = <GuestHome></GuestHome>;
+      } else {
+        root = <HostHome></HostHome>;
+      }
+    } 
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-        <Text>Test</Text>
-        <Text>Hi Rachel</Text>
-
-      </View>
+      root
     );
   }
 }
