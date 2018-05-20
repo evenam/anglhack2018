@@ -9,11 +9,18 @@ import picSource2 from '../components/nycblur1.jpg';
 export default class SignInAsHost extends React.Component {
     constructor(props) {
         super(props);
+        this.onPress = this.onPress.bind(this);
     }
-
     onPress() {
-      this.props.onLogin(this.state.username);
+
     }
+    static navigationOptions = { headerStyle:{
+      position: 'absolute',
+      backgroundColor: 'transparent',
+      zIndex: 100,
+      top: 0,
+      left: 0,
+      right: 0 } };
   render() {
 
     return (
@@ -29,16 +36,24 @@ export default class SignInAsHost extends React.Component {
           <TextInput style={styles.textStyle}
             name='email'
             placeholder='Username'
-            onChangeText={(text) => this.setState({username: text})}
+            onChangeText={(text) => this.setState({text})}
           />
           <Text style={styles.textStyle2}> PASSWORD </Text>
           <TextInput secureTextEntry={true} style={styles.textStyle}
             name='password'
             placeholder='Password'
             type='password'
-            onChangeText={(text) => this.setState({password: text})}
+            onChangeText={(text) => this.setState({text})}
           />
-          <Button onClick={this.onPress} title="Login" color="#fff" />
+          <Button
+              //onPress={this.onPress}
+              onPress={() =>
+                this.props.navigation.navigate('HostScreen')
+              }
+              title="Submit"
+              color="#fff"
+              //accessibilityLabel="Learn more about this purple button"
+          />
         </View>
       </ImageBackground>
     );
