@@ -14,6 +14,13 @@ export default class SignInAsHost extends React.Component {
     onPress() {
 
     }
+    static navigationOptions = { headerStyle:{
+      position: 'absolute',
+      backgroundColor: 'transparent',
+      zIndex: 100,
+      top: 0,
+      left: 0,
+      right: 0 } };
   render() {
 
     return (
@@ -37,6 +44,15 @@ export default class SignInAsHost extends React.Component {
             placeholder='Password'
             type='password'
             onChangeText={(text) => this.setState({text})}
+          />
+          <Button
+              //onPress={this.onPress}
+              onPress={() =>
+                this.props.navigation.navigate('HostScreen')
+              }
+              title="Submit"
+              color="#fff"
+              //accessibilityLabel="Learn more about this purple button"
           />
         </View>
       </ImageBackground>

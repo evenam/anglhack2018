@@ -25,6 +25,8 @@ const RootStack = createStackNavigator(
     RegisterAsScreen: RegisterAs,
     SignInAsGuestScreen: SignInAsGuest,
     SignInAsHostScreen: SignInAsHost,
+    HostScreen: HostHome,
+    GuestScreen: GuestHome,
   },
   {
     initialRouteName: 'LoginScreen',
@@ -61,7 +63,8 @@ export default class App extends React.Component {
     //  root
     //);
     //return root;
-    return <RootStack></RootStack>;
+    // return <RootStack></RootStack>;
+    return <GuestHome></GuestHome>;
   }
 }
 /*
