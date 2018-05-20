@@ -1,30 +1,70 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import {createStackNavigator} from 'react-navigation';
+import { gql, graphql } from 'react-apollo';
+
+/*
 import Login from './components/Login.js';
+import Buttons from './components/Buttons.js';
+*/
+import LoginBackground from './components/LoginBackground.js';
+
+import SignInAs from './components/SignInAs.js';
+import SignInAsHost from './components/SignInAsHost.js';
+import SignInAsGuest from './components/SignInAsGuest.js';
+
+import RegisterAs from './components/RegisterAs.js';
+
 import GuestHome from './components/Guest/Home.js';
 import HostHome from './components/Host/Home.js';
+
+const RootStack = createStackNavigator(
+  {
+    LoginScreen: LoginBackground,
+    SignInAsScreen: SignInAs,
+    RegisterAsScreen: RegisterAs,
+    SignInAsGuestScreen: SignInAsGuest,
+    SignInAsHostScreen: SignInAsHost,
+  },
+  {
+    initialRouteName: 'LoginScreen',
+  },
+  {
+    headerMode: 'screen',
+  }
+);
+
+//AppRegistry.registerComponent('App', () => App);
+
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.isUserLoggedIn = true;
+    this.isUserLoggedIn = false;
     this.isUserGuest = true;
   }
   render() {
-    let root = <Login></Login>;
+    //let root = <Login></Login>;
     if (this.isUserLoggedIn) {
       if (this.isUserGuest) {
-        root = <GuestHome></GuestHome>;
+        //root = <GuestHome></GuestHome>;
+        RootStack.initialRouteName = <GuestHome></GuestHome>;
       } else {
-        root = <HostHome></HostHome>;
+        //root = <HostHome></HostHome>;
+        RootStack.initialRouteName = <HostHome></HostHome>;
       }
-    } 
-    return (
-      root
-    );
+    }
+    //else {
+    //  root =
+    //}
+    //return (
+    //  root
+    //);
+    //return root;
+    return <RootStack></RootStack>;
   }
 }
-
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -33,3 +73,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+*/

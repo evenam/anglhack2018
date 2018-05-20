@@ -19,9 +19,18 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "antd": "^3.5.2",
+    "apollo-boost": "^0.1.6",
     "expo": "^27.0.1",
+    "graphql": "^0.13.2",
+    "graphql-tag": "^2.9.2",
     "npm": "^6.0.1",
     "react": "16.3.1",
-    "react-native": "^0.55.4"
+    "react-apollo": "^2.1.4",
+    "react-native": "^0.55.4",
+    "react-native-navigation": "^1.1.462",
+    "react-native-vector-icons": "^4.6.0",
+    "react-navigation": "^2.0.1",
+    "util": "^0.10.3"
   }
 }

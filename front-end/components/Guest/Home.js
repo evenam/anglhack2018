@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { Modal, StyleSheet, TouchableHighlight, Text, View, Button } from 'react-native';
 
-export default class Login extends React.Component {
+export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.onPress = this.onPress.bind(this);
@@ -9,11 +9,19 @@ export default class Login extends React.Component {
     onPress() {
 
     }
+    state = {
+    modalVisible: false,
+  };
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
   render() {
-      
+    const name = "dyadra";
     return (
       <View style={styles.container}>
-        <Text>Guest Home</Text>
+        <Text>Guest Home hello {name}</Text>
+        <Text>Hello</Text>
     </View>
     );
   }
