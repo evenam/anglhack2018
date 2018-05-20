@@ -16,7 +16,7 @@ import SignInAsGuest from './components/SignInAsGuest.js';
 import RegisterAs from './components/RegisterAs.js';
 
 import GuestHome from './components/Guest/Home.js';
-import HostHome from './components/Host/Home.js';
+import HostHome from './components/Host/app.js';
 
 const RootStack = createStackNavigator(
   {
@@ -61,7 +61,8 @@ export default class App extends React.Component {
     //  root
     //);
     //return root;
-    return <RootStack></RootStack>;
+    return <HostHome></HostHome>;
+    // return <RootStack></RootStack>;
   }
 }
 /*

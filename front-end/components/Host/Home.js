@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import App from './app';
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -13,7 +14,7 @@ export default class Login extends React.Component {
       
     return (
       <View style={styles.container}>
-        <Text>Host Home</Text>
+        <Text>Text</Text>
     </View>
     );
   }

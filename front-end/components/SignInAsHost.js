@@ -9,10 +9,10 @@ import picSource2 from '../components/nycblur1.jpg';
 export default class SignInAsHost extends React.Component {
     constructor(props) {
         super(props);
-        this.onPress = this.onPress.bind(this);
     }
-    onPress() {
 
+    onPress() {
+      this.props.onLogin(this.state.username);
     }
   render() {
 
@@ -29,15 +29,16 @@ export default class SignInAsHost extends React.Component {
           <TextInput style={styles.textStyle}
             name='email'
             placeholder='Username'
-            onChangeText={(text) => this.setState({text})}
+            onChangeText={(text) => this.setState({username: text})}
           />
           <Text style={styles.textStyle2}> PASSWORD </Text>
           <TextInput secureTextEntry={true} style={styles.textStyle}
             name='password'
             placeholder='Password'
             type='password'
-            onChangeText={(text) => this.setState({text})}
+            onChangeText={(text) => this.setState({password: text})}
           />
+          <Button onClick={this.onPress} title="Login" color="#fff" />
         </View>
       </ImageBackground>
     );
